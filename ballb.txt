@@ -1,0 +1,35 @@
+g++ -o bouncing_ball bouncing_ball.cpp -lsfml-graphics -lsfml-window -lsfml-system
+an@ian-Latitude-E7440:~$ g++ -o ballb ballb.cpp -lsfml-graphics -lsfml-window -lsfml-system
+ian@ian-Latitude-E7440:~$ cat ballb.cpp
+#include <SFML/Graphics.hpp>
+
+int main() {
+    sf::RenderWindow window(sf::VideoMode(800, 600), "Bouncing Ball");
+    sf::CircleShape ball(30.0f); // radius of the ball
+    ball.setFillColor(sf::Color::Red);
+
+    sf::Vector2f velocity(5.0f, 5.0f); // Initial velocity
+
+    while (window.isOpen()) {
+        sf::Event event;
+        while (window.pollEvent(event)) {
+            if (event.type == sf::Event::Closed)
+                window.close();
+        }
+
+        // Bounce off the edges
+        if (ball.getPosition().x + 2 * ball.getRadius() > window.getSize().x || ball.getPosition().x < 0)
+            velocity.x *= -1;
+        if (ball.getPosition().y + 2 * ball.getRadius() > window.getSize().y || ball.getPosition().y < 0)
+            velocity.y *= -1;
+
+        ball.move(velocity); // Move the ball
+
+        window.clear();
+        window.draw(ball);
+        window.display();
+    }
+
+    return 0;
+}
+ian@ian-Latitude-E7440:~$ ./ballb
